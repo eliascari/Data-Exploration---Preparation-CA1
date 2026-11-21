@@ -135,4 +135,20 @@ ggplot(
     y = "Life Expectancy (Years)"
   )
 
+#infant mortality in the 50 countries with most population
+infant_mortality_top50 <- population_top50 %>%
+  filter(IndicatorName == "Infant mortality rate")
+
+ggplot(
+  infant_mortality_top50,
+  aes(x = reorder(Location, Value), y = Value)
+) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Infant Mortality in the Top 50 Most Populous Locations (2024)",
+    x = "Location",
+    y = "Infant Deaths per 1,000 Live Births"
+  )
+
 
