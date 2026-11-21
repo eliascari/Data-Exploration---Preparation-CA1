@@ -77,6 +77,46 @@ outlier_summary <- population_clean %>%
 
 outlier_summary
 
+#selecting the top 50 countries based on hightes to lowest population
+#im doing this because the dataset is too large
+top_50_locations <- population_2024 %>%
+  filter(
+    IndicatorName == "Total population by sex",
+    Age == "Total"
+  ) %>%
+  arrange(desc(Value)) %>%
+  slice_head(n = 50) %>%
+  pull(Location)
+
+length(top_50_locations)
+
+#filtering and checking if the top 50 population was done correctly
+population_top50 <- population_2024 %>%
+  filter(Location %in% top_50_locations)
+
+length(unique(population_top50$Location))
+
+#fertility graph using the top 50 countries
+fertility_top50 <- population_top50 %>%
+  filter(
+    IndicatorName == "Total fertility rate"
+  )
+
+ggplot(
+  fertility_top50,
+  aes(
+    x = reorder(Location, Value),
+    y = Value
+  )
+) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Total Fertility Rate in the Top 50 Most Populous Locations (2024)",
+    x = "Location",
+    y = "Children per woman"
+  ) +
+  theme_minimal()
 
 
 
