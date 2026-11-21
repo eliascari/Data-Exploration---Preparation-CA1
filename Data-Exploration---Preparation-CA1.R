@@ -119,4 +119,20 @@ ggplot(
   theme_minimal()
 
 
+#life expectancy in the 50 countries with the most population
+life_expectancy_top50 <- population_top50 %>%
+  filter(IndicatorName == "Life expectancy at birth")
+
+ggplot(
+  life_expectancy_top50,
+  aes(x = reorder(Location, Value), y = Value)
+) +
+  geom_col() +
+  coord_flip() +
+  labs(
+    title = "Life Expectancy in the Top 50 Most Populous Locations in 2024",
+    x = "Location",
+    y = "Life Expectancy (Years)"
+  )
+
 
