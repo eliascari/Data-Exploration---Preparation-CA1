@@ -151,4 +151,24 @@ ggplot(
     y = "Infant Deaths per 1,000 Live Births"
   )
 
+#comparison between fertility and life expectancy
+fertility_life <- population_top50 %>%
+  filter(IndicatorName %in% c(
+    "Total fertility rate",
+    "Life expectancy at birth"
+  )) %>%
+  select(Location, IndicatorName, Value) %>%
+  pivot_wider(
+    names_from = IndicatorName,
+    values_from = Value
+  ) %>%
+  drop_na()
+
+dim(fertility_life)
+
+#this will check if there correlation between them
+cor(
+  fertility_life$`Total fertility rate`,
+  fertility_life$`Life expectancy at birth`,
+)
 
