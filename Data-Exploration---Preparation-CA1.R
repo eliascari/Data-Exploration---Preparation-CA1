@@ -144,7 +144,7 @@ ggplot(
 
 #infant mortality in the 50 countries with most population
 infant_mortality_top50 <- population_top50 %>%
-  filter(IndicatorName == "Infant mortality rate")
+  filter(IndicatorName == "Infant mortality rate (IMR)")
 
 ggplot(
   infant_mortality_top50,
@@ -260,3 +260,29 @@ pca_result <- prcomp(
 
 summary(pca_result)
 
+#scree plot to visualize how much variation each principal component has
+fviz_eig(
+  pca_result,
+  addlabels = TRUE,
+  ylim = c(0, 100)
+)
+
+#individual plot shows how the 50 locations are distributed and compared
+fviz_pca_ind(
+  pca_result,
+  geom.ind = "point",
+  label = "ind",
+  repel = TRUE,
+  col.ind = "cos2",
+  gradient.cols = c("blue", "orange", "red"),
+  title = "PCA: Comparison of the 50 Most Populous Locations"
+)
+
+#variable plot shows which indicators contribute most to the principal component
+fviz_pca_var(
+  pca_result,
+  col.var = "contrib",
+  gradient.cols = c("blue", "orange", "red"),
+  repel = TRUE,
+  title = "PCA: Contributions of Demographic Indicators"
+)
