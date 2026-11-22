@@ -172,3 +172,39 @@ cor(
   fertility_life$`Life expectancy at birth`,
 )
 
+#scatter plot to check for the correlation
+ggplot(
+  fertility_life,
+  aes(
+    x = `Total fertility rate`,
+    y = `Life expectancy at birth`
+  )
+) +
+  geom_point() +
+  labs(
+    title = "Relationship Between Fertility and Life Expectancy",
+    x = "Total Fertility Rate (Children per Woman)",
+    y = "Life Expectancy (Years)"
+  )
+
+
+#highest fertility rate from the 5 highest countries
+fertility_extremes <- fertility_life %>%
+  arrange(desc(`Total fertility rate`))
+
+head(fertility_extremes, 5)
+
+#lowest fertility rate from the 5 lowest countries
+tail(fertility_extremes, 5)
+
+#highest infant mortality rate from the 5 highest countries
+infant_extremes <- infant_mortality_top50 %>%
+  arrange(desc(Value)) %>%
+  select(Location, Value)
+
+head(infant_extremes, 5)
+
+#lowest infant mortality rate from the 5 lowest countries
+
+tail(infant_extremes, 5)
+
