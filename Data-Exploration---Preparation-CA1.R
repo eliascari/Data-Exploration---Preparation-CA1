@@ -77,6 +77,13 @@ outlier_summary <- population_clean %>%
 
 outlier_summary
 
+#population from 2024
+population_2024 <- population_clean %>%
+  filter(
+    Time == 2024,
+    Variant == "Median",
+    Sex == "Both sexes"
+  )
 #selecting the top 50 countries based on hightes to lowest population
 #im doing this because the dataset is too large
 top_50_locations <- population_2024 %>%
@@ -207,4 +214,49 @@ head(infant_extremes, 5)
 #lowest infant mortality rate from the 5 lowest countries
 
 tail(infant_extremes, 5)
+
+#checking that each location has only 1 value for each indicator
+pca_data <- population_top50 %>%
+  filter(
+    Age == "Total",
+    IndicatorName %in% c(
+      "Total fertility rate",
+      "Life expectancy at birth",
+      "Infant mortality rate (IMR)",
+      "Under-five mortality rate (U5MR)",
+      "Median age of population",
+      "Crude birth rate",
+      "Population density"
+    )
+  ) %>%
+  select(Location, IndicatorName, Value)
+
+#checking for duplicates in any location
+pca_data %>%
+  count(Location, IndicatorName) %>%
+  filter(n > 1)
+
+#making the data wide format for PCA
+pca_wide <- pca_data %>%
+  pivot_wider(
+    names_from = IndicatorName,
+    values_from = Value
+  )
+
+dim(pca_wide)
+
+#standardisation so each variable it has approximately mean = 0, standard deviation = 1
+pca_scaled <- scale(
+  pca_wide %>%
+    select(-Location)
+)
+
+#this will perform PCA using the standardised indicators
+pca_result <- prcomp(
+  pca_scaled,
+  center = TRUE,
+  scale. = TRUE
+)
+
+summary(pca_result)
 
